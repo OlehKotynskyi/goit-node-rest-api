@@ -1,15 +1,15 @@
-const Joi = require('joi');
+// schemas/contactsSchemas.js
 
-const createContactSchema = Joi.object({
+import Joi from 'joi';
+
+export const createContactSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().required(),
   phone: Joi.string().required(),
 });
 
-const updateContactSchema = Joi.object({
+export const updateContactSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string(),
   phone: Joi.string(),
 });
-
-module.exports = { createContactSchema, updateContactSchema };
