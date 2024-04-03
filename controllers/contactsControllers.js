@@ -32,8 +32,12 @@ export const deleteContact = async (req, res) => {
 };
 
 export const createContact = async (req, res) => {
-  const result = await addContact(req.body);
-  res.status(201).json(result);
+  const { name, email, phone } = req.body;
+  const newContact = await addContact(name, email, phone);
+  if (!newContact) {
+    throw HttpError(500, 'Failed to create contact');
+  }
+  res.status(201).json(newContact);
 };
 
 export const updateContact = async (req, res) => {
