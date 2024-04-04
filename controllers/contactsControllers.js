@@ -1,4 +1,5 @@
 // controllers/contactsControllers.js
+import { catchAsync } from '../helpers/catchAsync.js';
 import {
   addContact,
   getContactById,
@@ -8,14 +9,10 @@ import {
 } from '../services/contactsServices.js';
 import HttpError from '../helpers/HttpError.js';
 
-export const getAllContacts = async (req, res, next) => {
-  try {
-    const result = await listContacts();
-    res.status(200).json(result);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getAllContacts = catchAsync(async (req, res, next) => {
+  const result = await listContacts();
+  res.status(200).json(result);
+});
 
 export const getOneContact = async (req, res, next) => {
   try {
