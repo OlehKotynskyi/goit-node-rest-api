@@ -6,6 +6,7 @@ import {
   listContacts,
   removeContact,
   updateContact as updateContactService,
+  updateStatusContact,
 } from '../services/contactsServices.js';
 import HttpError from '../helpers/HttpError.js';
 
@@ -35,11 +36,16 @@ export const createContact = catchAsync(async (req, res) => {
 });
 
 export const updateContact = catchAsync(async (req, res) => {
-  if (Object.keys(req.body).length === 0) {
-    throw HttpError(404, 'Body must have at least one field');
-  }
   const { id } = req.params;
   const result = await updateContactService(id, req.body);
   if (!result) throw HttpError(404, 'Not found');
   res.json(result);
+});
+
+export const updateStatus = catchAsync(async (req, res) => {
+  const { contactId } = req.params;
+  const { favorite } = req.body;
+  const updatedContact = await updateStatusContact(contactId, { favorite });
+  if (!updatedContact) throw HttpError(404, 'Not found');
+  res.status(200).json(updatedContact);
 });

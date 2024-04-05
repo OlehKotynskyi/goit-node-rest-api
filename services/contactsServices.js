@@ -24,8 +24,14 @@ export const updateContact = async (id, data) => {
   return updatedContact;
 };
 
+export const updateStatusContact = async (contactId, body) => {
+  const { favorite } = body;
+  const updatedContact = await Contact.findByIdAndUpdate(contactId, { favorite }, { new: true });
+  return updatedContact;
+};
+
 export const removeContact = async contactId => {
   // ...твій код. Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
-  const removedContact = await Contact.findOneAndDelete(contactId);
+  const removedContact = await Contact.findByIdAndDelete(contactId);
   return removedContact;
 };
