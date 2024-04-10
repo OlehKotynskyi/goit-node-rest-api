@@ -11,7 +11,7 @@ import {
 import HttpError from '../helpers/HttpError.js';
 
 export const getAllContacts = catchAsync(async (req, res) => {
-  const result = await listContacts();
+  const result = await listContacts(req);
   res.status(200).json(result);
 });
 
@@ -30,7 +30,8 @@ export const deleteContact = catchAsync(async (req, res) => {
 });
 
 export const createContact = catchAsync(async (req, res) => {
-  const newContact = await addContact(req.body);
+  const { _id: owner } = req.user;
+  const newContact = await addContact({ ...req.body, owner });
   if (!newContact) throw HttpError(500, 'Failed to create contact');
   res.status(201).json(newContact);
 });
