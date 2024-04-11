@@ -48,10 +48,11 @@ export const loginUser = catchAsync(async (req, res) => {
 });
 
 export const getCurrent = (req, res) => {
-  const { email } = req.user;
+  const { email, subscription } = req.user;
 
   res.json({
     email,
+    subscription,
   });
 };
 

@@ -19,9 +19,10 @@ export const listContacts = async req => {
   return dataContacts;
 };
 
-export const getContactById = async contactId => {
+export const getContactById = async (req, contactId) => {
   // Повертає об'єкт контакту з таким id. Повертає null, якщо контакт з таким id не знайдений.
-  const contact = await Contact.findById(contactId);
+  const { _id: owner } = req.user;
+  const contact = await Contact.findOne({ _id: contactId, owner });
   return contact || null;
 };
 
@@ -32,21 +33,28 @@ export const addContact = async (...args) => {
   return newContact;
 };
 
-export const updateContact = async (id, data) => {
+export const updateContact = async (req, id, data) => {
   // Оновлює контакт.
-  const updatedContact = await Contact.findByIdAndUpdate(id, data, { new: true });
+  const { _id: owner } = req.user;
+  const updatedContact = await Contact.findOneAndUpdate({ _id: id, owner }, data, { new: true });
   return updatedContact;
 };
 
-export const updateStatusContact = async (contactId, body) => {
+export const updateStatusContact = async (req, contactId, body) => {
   // Оновлює статус контакта.
   const { favorite } = body;
-  const updatedContact = await Contact.findByIdAndUpdate(contactId, { favorite }, { new: true });
+  const { _id: owner } = req.user;
+  const updatedContact = await Contact.findOneAndUpdate(
+    { _id: contactId, owner },
+    { favorite },
+    { new: true }
+  );
   return updatedContact;
 };
 
-export const removeContact = async contactId => {
+export const removeContact = async (req, contactId) => {
   // Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
-  const removedContact = await Contact.findByIdAndDelete(contactId);
+  const { _id: owner } = req.user;
+  const removedContact = await Contact.findOneAndDelete({ _id: contactId, owner });
   return removedContact;
 };

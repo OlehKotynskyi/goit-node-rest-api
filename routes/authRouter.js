@@ -18,16 +18,16 @@ import authenticate from '../helpers/authenticate.js';
 
 const usersRouter = express.Router();
 
+usersRouter.get('/current', authenticate, getCurrent);
+
 usersRouter.post('/register', validateBody(userRegisterSchema), createUser);
 
 usersRouter.post('/login', validateBody(userloginSchema), loginUser);
 
-usersRouter.get('/current', authenticate, getCurrent);
-
 usersRouter.post('/logout', authenticate, logout);
 
 usersRouter.patch(
-  '/users',
+  '/subscription',
   authenticate,
   validateBody(updateSubscriptionSchema),
   updateSubscription
