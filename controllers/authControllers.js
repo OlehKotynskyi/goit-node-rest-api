@@ -60,9 +60,7 @@ export const logout = catchAsync(async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: null });
 
-  res.json({
-    message: 'Logout success',
-  });
+  res.status(204).send();
 });
 
 export const updateSubscription = catchAsync(async (req, res) => {

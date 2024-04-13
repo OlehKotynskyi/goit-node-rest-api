@@ -17,7 +17,7 @@ export const getAllContacts = catchAsync(async (req, res) => {
 
 export const getOneContact = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const contact = await getContactById(id);
+  const contact = await getContactById(req, id);
   if (!contact) {
     throw HttpError(404, 'Not found');
   }
