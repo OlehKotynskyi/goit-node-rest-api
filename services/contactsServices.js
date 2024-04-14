@@ -53,8 +53,10 @@ export const updateStatusContact = async (req, contactId, body) => {
 };
 
 export const removeContact = async (req, contactId) => {
-  // Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
   const { _id: owner } = req.user;
   const removedContact = await Contact.findOneAndDelete({ _id: contactId, owner });
+  if (!removedContact) {
+    return null;
+  }
   return removedContact;
 };

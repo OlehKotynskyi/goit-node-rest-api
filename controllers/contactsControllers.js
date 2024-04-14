@@ -29,15 +29,14 @@ export const getOneContact = catchAsync(async (req, res) => {
 
 export const deleteContact = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const contact = await removeContact(id);
+  const contact = await removeContact(req, id);
   if (!contact) {
     throw HttpError(404, 'Not found');
   }
   if (contact.owner.toString() !== req.user._id.toString()) {
     throw HttpError(403, 'Access forbidden');
   }
-  const result = await removeContact(id);
-  res.status(200).json(result);
+  res.status(200).json(contact);
 });
 
 export const createContact = catchAsync(async (req, res) => {
@@ -49,20 +48,20 @@ export const createContact = catchAsync(async (req, res) => {
 
 export const updateContact = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const contact = await updateContactService(id, req.body);
+  const contact = await updateContactService(req, id, req.body);
   if (!contact) throw HttpError(404, 'Not found');
   if (contact.owner.toString() !== req.user._id.toString()) {
     throw HttpError(403, 'Access forbidden');
   }
   const { favorite } = req.body;
-  const updatedContact = await updateStatusContact(id, { favorite });
+  const updatedContact = await updateStatusContact(req, id, { favorite });
   res.json(updatedContact);
 });
 
 export const updateStatus = catchAsync(async (req, res) => {
   const { contactId } = req.params;
   const { favorite } = req.body;
-  const updatedContact = await updateStatusContact(contactId, { favorite });
+  const updatedContact = await updateStatusContact(req, contactId, { favorite });
   if (!updatedContact) throw HttpError(404, 'Not found');
   res.status(200).json(updatedContact);
 });
