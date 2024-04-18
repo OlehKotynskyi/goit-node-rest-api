@@ -24,6 +24,7 @@ mongoose
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 app.use('/users', usersRouter);
 app.use('/api/contacts', contactsRouter);
@@ -33,6 +34,9 @@ app.use((_, res) => {
 });
 
 app.use((err, req, res, next) => {
+  if (err.status === 401) {
+    return res.status(401).json({ message: 'Not authorized' });
+  }
   const { status = 500, message = 'Server error' } = err;
   res.status(status).json({ message });
 });
