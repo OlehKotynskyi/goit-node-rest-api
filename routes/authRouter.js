@@ -6,10 +6,13 @@ import {
   getCurrent,
   loginUser,
   logout,
+  resendVerifayEmail,
   updateAvatar,
   updateSubscription,
+  verifyEmail,
 } from '../controllers/authControllers.js';
 import {
+  emailSchema,
   updateSubscriptionSchema,
   userloginSchema,
   userRegisterSchema,
@@ -23,6 +26,10 @@ const usersRouter = express.Router();
 usersRouter.get('/current', authenticate, getCurrent);
 
 usersRouter.post('/register', validateBody(userRegisterSchema), createUser);
+
+usersRouter.get('/verify/:verificationToken', verifyEmail);
+
+usersRouter.post('/verify', validateBody(emailSchema), resendVerifayEmail);
 
 usersRouter.post('/login', validateBody(userloginSchema), loginUser);
 
