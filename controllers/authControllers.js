@@ -59,7 +59,7 @@ export const verifyEmail = catchAsync(async (req, res) => {
   if (user.verify) {
     throw HttpError(409, 'Email already verified');
   }
-  await User.findByIdAndUpdate(user._id, { verify: true, verificationToken: '' });
+  await User.findByIdAndUpdate(user._id, { verify: true, verificationToken: null });
 
   res.status(200).json({
     message: 'Email verification successful',
